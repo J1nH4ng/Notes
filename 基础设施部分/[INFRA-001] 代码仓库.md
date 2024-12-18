@@ -28,7 +28,7 @@
    gitlab-ctl tail
     ```
     
-    在安装过程中可能出现无法找到`lubcrypto.so.1.1.0`这个 lib 库的问题，这是因为新的发行版将其改名为`libcrypto.so.2`导致的，添加软链即可解决问题：
+    在安装过程中可能出现无法找到 `lubcrypto.so.1.1.0` 这个 lib 库的问题，这是因为新的发行版将其改名为 `libcrypto.so.2` 导致的，添加软链即可解决问题：
     
     ```bash
     ln -s libcrypto.so.1.1.0 libcrypto.so.2
@@ -36,10 +36,10 @@
     
 #### 配置 Nginx 访问
 
-在上一步安装成功之后，就可以通过配置`https://<your-domain-name>.com`进行访问了，生成的默认账户密码如下：
+在上一步安装成功之后，就可以通过配置 `https://<your-domain-name>.com` 进行访问了，生成的默认账户密码如下：
 
 - 账户：root
-- 密码：使用`cat /etc/gitlab/initial_root_password`命令查看
+- 密码：使用 `cat /etc/gitlab/initial_root_password` 命令查看
 
 > 对于域名访问的说明： 
 >
