@@ -74,7 +74,7 @@
     写入如下内容：
     
 
-    ```bash
+    ```nginx
     server {
         listen 443;
         server_name gitlab.<your-domain-name>.com;
