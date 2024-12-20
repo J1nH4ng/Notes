@@ -1,4 +1,4 @@
-# [INFRA-001-代码仓库]
+# [iB-001-代码仓库]
 
 ## OpenEuler 上安装 GitLab
 
