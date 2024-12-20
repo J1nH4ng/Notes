@@ -1,1 +1,3 @@
-# [CONFOG-001] dotgitconfig
+# [CONFOG-001] .gitconfig 配置文件分享
+
+
