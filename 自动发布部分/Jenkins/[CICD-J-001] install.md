@@ -14,6 +14,7 @@
 - [ ] Jdk 8 （与业务代码所需 Java 版本一致）
 - [ ] NVM （管理 NodeJS 版本）
     - [ ] NodeJS 10.24.1
+    - [ ] NodeJS 12.22.12
     - [ ] NodeJS 14.21.3
     - [ ] NodeJS 16.20.2
     - [ ] NodeJS 18.20.5
@@ -23,8 +24,12 @@
     - [ ] GitLab 的账户密码
 - [ ] Php （与业务代码所需 Php 版本一致）
     - [ ] Compress
-    
+- [ ] Ansible
+    - [ ] 配置账户密码
+    - [ ] 配置免密执行 sudo 命令
+
 ## Jenkins 插件列表
 
-1. Blue Ocean
-2. Version Number
+1. Localization Support
+2. Localization:Chinese (Simplified)
+3. Locale
