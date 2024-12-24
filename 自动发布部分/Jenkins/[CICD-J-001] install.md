@@ -77,7 +77,9 @@ echo 'JAVA_HOME=/usr/local/jdk8' >> /etc/profile
 source /etc/profile
 ```
 
-##### 安装 Maven
+##### 安装并配置 Maven
+
+###### 安装 Maven
 
 Maven 的下载地址如下：[https://archive.apache.org/dist/maven/maven-3/](https://archive.apache.org/dist/maven/maven-3/)
 
@@ -112,3 +114,5 @@ export PATH' >> /etc/profile
 ```bash
 source /etc/profile
 ```
+
+###### 配置 Maven
