@@ -117,5 +117,19 @@ source /etc/profile
 
 ###### 配置 Maven
 
+需要配置的内容有以下两点：
+
 1. 修改镜像源地址为国内源
 2. 配置私人镜像源地址
+
+修改 Maven 配置文件：
+
+```bash
+vim /usr/local/maven3.9/conf/settings.xml
+```
+
+写入如下内容：
+
+```diff
+
+```
