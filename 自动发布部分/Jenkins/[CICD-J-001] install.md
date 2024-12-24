@@ -22,3 +22,9 @@
     - [ ] SSH-Keygen
     - [ ] GitLab 的账户密码
 - [ ] Php （与业务代码所需 Php 版本一致）
+    - [ ] Compress
+    
+## Jenkins 插件列表
+
+1. Blue Ocean
+2. Version Number
