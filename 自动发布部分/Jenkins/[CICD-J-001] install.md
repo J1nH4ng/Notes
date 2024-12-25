@@ -491,6 +491,8 @@ sed -i 's#www.google.com#www.bilibili.com#g' default.json
 
 #### 配置代码拉取凭据
 
+##### 使用 SSH 协议拉取
+
 Jenkins 如果可以使用 SSH 协议进行代码拉取，可以将本机的 SSH 的公钥配置在 Git 服务器上。
 
 首先生成 SSH-Keygen，由于安全考虑，Github 已经不允许基于 RSA2048 算法的密钥生成，这里使用 ed25519 算法，如果服务器无法支持该算法，可以使用 RSA4096 算法
@@ -503,4 +505,21 @@ ssh-keygen -t ed25519 -C "deploy_email@example.com"
 ssh-keygen -t rsa -b 4096 -C "deploy_email@example.com"
 ```
 
-当系统提示“输入要存储密钥的文件”时，可以使用回车结束默认文件的位置，如果之前创建过了，ssh-keygen 可能会要求你重写密钥，这种情况下，可以对刚刚创建的文件进行自定义命名。此时，可以修改 `.gitconfig` 文件，来指定使用哪个密钥来进行代码的拉取。
+当系统提示“输入要存储密钥的文件”时，可以使用回车结束默认文件的位置，如果之前创建过了，ssh-keygen 可能会要求你重写密钥，这种情况下，可以对刚刚创建的文件进行自定义命名。此时，可以修改 `.gitconfig` 文件，来指定使用哪个密钥来进行代码的拉取。这里我们假定刚刚生成的密钥命名为 `id_rsa_gitlab` 和 `id_rsa_gitlab.pub`
+
+
+修改 ssh 的配置文件：
+
+```bash
+vim /root/.ssh/config
+```
+
+写入如下内容：
+
+```bash
+Host self-hosted-gitlab
+  HostName gitlab.example.com
+  User git
+  IdentityFile /root/.ssh/id_rsa_gitlab
+  IdentitiesOnly yes
+```
