@@ -128,8 +128,35 @@ source /etc/profile
 vim /usr/local/maven3.9/conf/settings.xml
 ```
 
-写入如下内容：
+添加如下内容：
 
 ```diff
+...
+<servers>
++    <server>
++        <id>self-hosted-nexus</id>
++        <username>${username}</username>
++        <password>${password}</password> 
++    </server>
+</servers>
 
+...
+
+<mirrors>
++    <mirror>
++        <id>self-hosted-nexus</id>
++        <mirrorOf>*</mirrorOf>
++        <name>self-hosted-nexus</name>
++        <url>${url}</url>
++    </mirror>
++    <mirror>
++        <id>aliyun-maven</id>
++        <mirrorOf>*</mirrorOf>
++        <url>https://maven.aliyun.com/repository/public/</url>
++    </mirror>
+</mirrors>
+
+...
 ```
+
+将这里的 `${username}` 和 `${password}` 替换为私有仓库的账户密码，将 `${url}` 替换为可以被访问到的地址。
