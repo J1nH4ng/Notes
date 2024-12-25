@@ -523,3 +523,15 @@ Host self-hosted-gitlab
   IdentityFile /root/.ssh/id_rsa_gitlab
   IdentitiesOnly yes
 ```
+
+同时，需要将 `id_rsa_gitlab.pub` 文件中的内容配置在 GitLab 服务器上。
+
+##### 使用 HTTP 协议拉取
+
+当不能使用 SSH 协议拉取代码时，需要配置 Git 仓库的登录凭据。
+
+在 Jenkins Web 界面上，依照如下顺序进行点击：
+
+[系统管理] -> [凭据] -> 最底部的 [System] -> [全局凭据 (unrestricted)] -> [+ Add Credentials]
+
+凭据的类型选择：`Username with password`，根据具体的信息进行填写 Git 服务器的用户名和地址。
