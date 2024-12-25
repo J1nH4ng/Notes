@@ -535,3 +535,28 @@ Host self-hosted-gitlab
 [系统管理] -> [凭据] -> 最底部的 [System] -> [全局凭据 (unrestricted)] -> [+ Add Credentials]
 
 凭据的类型选择：`Username with password`，根据具体的信息进行填写 Git 服务器的用户名和地址。
+
+#### 配置 Ansible 进行分发
+
+使用 Ansible 软件对已完成编译的业务代码包进行分发，分发过程中使用了 `scp` 命令，需要保证 Jenkins 服务器和业务服务器之间可以通过 SSH 协议进行通信。
+
+在 Jenkins 服务器上安装 Ansible
+
+```bash
+yum install -y ansible
+```
+
+配置 ansible 软件的 hosts 文件：
+
+```bash
+vim /etc/ansible/hosts
+```
+
+写入如下内容：
+
+```diff
++ 192.168.50.101 ansible_ssh_port=22 ansible_ssh_user=deploy ansible_ssh_pass="your_password"
++ 192.168.50.102 ansible_ssh_port=22 ansible_ssh_user=deploy ansible_ssh_pass="your_password"
+```
+
+其中的 192.168.50.101 和 192.168.50.102 两台为业务所在的服务器。
