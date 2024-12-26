@@ -555,8 +555,8 @@ vim /etc/ansible/hosts
 写入如下内容：
 
 ```diff
-+ 192.168.50.101 ansible_ssh_port=22 ansible_ssh_user=deploy ansible_ssh_pass="your_password"
-+ 192.168.50.102 ansible_ssh_port=22 ansible_ssh_user=deploy ansible_ssh_pass="your_password"
++ 192.168.50.101 ansible_ssh_port=22 ansible_ssh_user=nginx ansible_ssh_pass="your_password"
++ 192.168.50.102 ansible_ssh_port=22 ansible_ssh_user=nginx ansible_ssh_pass="your_password"
 ```
 
-其中的 192.168.50.101 和 192.168.50.102 两台为业务所在的服务器。
+其中的 192.168.50.101 和 192.168.50.102 两台为业务所在的服务器。需要保证这两台服务器可以通过 `nginx` 用户进行登录。
