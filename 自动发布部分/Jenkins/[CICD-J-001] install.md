@@ -4,29 +4,29 @@
 
 ### 运行 Jenkins 需要
 
-- [ ] Jenkins
-- [ ] Jdk 17+ （Jenkins 运行需要）
+- [x] Jenkins
+- [x] Jdk 17+ （Jenkins 运行需要）
 
 ### 业务需要
 
-- [ ] Maven
-    - [ ] 修改 Maven 源
-- [ ] Jdk 8 （与业务代码所需 Java 版本一致）
-- [ ] NVM （管理 NodeJS 版本）
-    - [ ] NodeJS 10.24.1
-    - [ ] NodeJS 12.22.12
-    - [ ] NodeJS 14.21.3
-    - [ ] NodeJS 16.20.2
-    - [ ] NodeJS 18.20.5
-    - [ ] NodeJS 20.18.1
-- [ ] 代码凭据配置配置（拉取代码需要）
-    - [ ] SSH-Keygen
-    - [ ] GitLab 的账户密码
-- [ ] Php （与业务代码所需 Php 版本一致）
+- [x] Maven
+    - [x] 修改 Maven 源
+- [x] Jdk 8 （与业务代码所需 Java 版本一致）
+- [x] NVM （管理 NodeJS 版本）
+    - [x] NodeJS 10.24.1
+    - [x] NodeJS 12.22.12
+    - [x] NodeJS 14.21.3
+    - [x] NodeJS 16.20.2
+    - [x] NodeJS 18.20.5
+    - [x] NodeJS 20.18.1
+- [x] 代码凭据配置配置（拉取代码需要）
+    - [x] SSH-Keygen
+    - [x] GitLab 的账户密码
+- [ ] PHP （与业务代码所需 PHP 版本一致）
     - [ ] Compress
-- [ ] Ansible
-    - [ ] 配置账户密码
-    - [ ] 配置免密执行 sudo 命令
+- [x] Ansible
+    - [x] 配置账户密码
+    - [x] 配置免密执行 sudo 命令
 
 ## Jenkins 所需插件列表
 
@@ -572,6 +572,42 @@ ansible web -m ping
 
 ### Web 应用服务器
 
+#### 配置 nginx 用户权限
+
+由于 Jenkins 需要分发已完成打包的代码包，在分发过程中，可能会涉及到 `root` 权限的操作行为，在执行 `sudo` 时需要输入密码，所以需要修改 `nginx` 用户的权限，使其可以免密执行 `sudo` 命令。
+
+修改如下文件内容：
+
+```bash
+vim /etc/sudoers
+```
+
+新增如下内容：
+
+```diff
+...
+
+## Same thing without a password
+# %wheel    ALL=(ALL)   NOPASSWD: ALL
++ nginx   ALL=(ALL)   NOPASSWD: ALL
+
+...
+```
+
+需要保证业务服务器上 `nginx` 用户的存在，且可以执行登录操作，如果在创建 `nginx` 用户时添加了 `/sbin/nologin` 参数，可以进行如下操作进行恢复：
+
+```bash
+vim /etc/passwd
+```
+
+修改如下内容：
+
+```diff
+- nginx:x:1000:1000::/home/nginx:/sbin/nologin
++ nginx:x:1000:1000::/home/nginx:/bin/bash
+```
+
+
 #### 安装业务需要的软件环境
 
 ##### 安装 JDK 8
@@ -604,3 +640,11 @@ echo 'JAVA_HOME=/usr/local/jdk8' >> /etc/profile
 ```bash
 source /etc/profile
 ```
+
+##### 安装 Supervisord
+
+##### 安装 Nginx
+
+##### 安装 PHP
+
+[!TODO]
