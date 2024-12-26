@@ -555,11 +555,52 @@ vim /etc/ansible/hosts
 写入如下内容：
 
 ```diff
++ [web]
 + 192.168.50.101 ansible_ssh_port=22 ansible_ssh_user=nginx ansible_ssh_pass="your_password"
 + 192.168.50.102 ansible_ssh_port=22 ansible_ssh_user=nginx ansible_ssh_pass="your_password"
 ```
 
 其中的 192.168.50.101 和 192.168.50.102 两台为业务所在的服务器。需要保证这两台服务器可以通过 `nginx` 用户进行登录。
 
+完成后，使用 Ansible Ping 模块进行测试：
+
+```bash
+ansible web -m ping
+```
+
+返回值为 `pong` 代表成功。
+
 ### Web 应用服务器
 
+#### 安装业务需要的软件环境
+
+##### 安装 JDK 8
+
+由于 Oracle 为了保证 JDK 的更新而强制关闭 JDK 旧版本的登录下载；所以，对于 JDK 8 的版本来说，需要我们手动从 [Oracle Java 网站](https://www.oracle.com/cn/java/technologies/downloads/)上下载，然后上传至服务器。这里我们将 JDK 8 的压缩包上传至服务器的 `/usr/local/src/` 目录下。
+
+```bash
+cd /usr/local/src
+```
+
+解压缩预编译好的 JDK 8 压缩包，并移动到外层目录中：
+
+```bash
+tar -zxvf jdk-8u371-linux-x64.tar.gz
+
+mv jdk1.8.0_371 /usr/local/jdk8
+```
+
+写入环境变量，便于后续打包时调用：
+
+```bash
+echo 'PATH=$PATH:/usr/local/jdk8/bin
+export PATH' >> /etc/profile
+
+echo 'JAVA_HOME=/usr/local/jdk8' >> /etc/profile
+```
+
+刷新环境变量，使其生效。
+
+```bash
+source /etc/profile
+```
