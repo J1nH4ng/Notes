@@ -641,7 +641,125 @@ echo 'JAVA_HOME=/usr/local/jdk8' >> /etc/profile
 source /etc/profile
 ```
 
-##### 安装 Supervisord
+##### 安装与配置 Supervisord
+
+###### 安装 Supervisord
+
+对于 Java 进程，如果使用 `nohup` 这样的命令来启动，对于业务而言并不能完整的控制和监控进程，这里我们选择使用 Supervisord 这个软件来对 Java 进程进行控制管理和监控。
+
+下载 Supervisord 源码到 `/usr/local/src` 目录下：
+
+```bash
+cd /usr/local/src
+
+wget https://files.pythonhosted.org/packages/ce/37/517989b05849dd6eaa76c148f24517544704895830a50289cbbf53c7efb9/supervisor-4.2.5.tar.gz
+```
+
+解压：
+
+```bash
+tar -zxvf supervisor-4.2.5.tar.gz
+```
+
+由于 Supervisord 是由 Python 进行编写的，需要使用 python 来进行安装：
+
+```bash
+cd /usr/local/src/supervisor-4.2.5
+
+python3 setup.py install
+```
+
+安装完成后，将 `supervisord` 命令写入到全局变量中：
+
+```bash
+ln -sf /usr/local/bin/supervisor* /usr/bin/
+ln -sf /usr/local/bin/echo_supervisord_conf /usr/bin/
+```
+
+写入成功后，可以通过如下命令进行版本查看：
+
+```bash
+supervisord --version
+```
+
+###### 配置 Supervisord
+
+创建 Supervisord 运行所需要的工作目录：
+
+```bash
+mkdir -p /etc/supervisord.d
+mkdir -p /var/log/supervisor
+mkdir -p /var/run/supervisor
+```
+
+创建默认配置文件 ：
+
+```bash
+echo 'D /var/run/supervisor 0775 root root -' > /etc/tmpfiles.d/supervisor.conf
+echo_supervisord_conf > /etc/supervisord.conf
+```
+
+修改配置文件内容：
+
+```diff
+...
+[unix_http_server]
+- file=/tmp/supervisor/supervisor.sock   ; (the path to the socket file)
++ file=/var/run/supervisor/supervisor.sock   ; (the path to the socket file)
+[supervisorctl]
+- serverurl=unix:///tmp/supervisor/supervisor.sock ; use a unix:// URL  for a unix socket
++ serverurl=unix:///var/run/supervisor/supervisor.sock ; use a unix:// URL  for a unix socket
+
+[inet_http_server]         ; inet (TCP) server disabled by default
+- ;port=*:9001                ; ip_address:port specifier, *:port for all iface
++ port=*:9001                ; ip_address:port specifier, *:port for all iface
+- ;username=admin             ; default is no username (open server)
++ username=admin             ; default is no username (open server)
+- ;password=<password>        ; default is no password (open server)
++ password=<password>        ; default is no password (open server)
+
+[supervisord]
+- logfile=/tmp/supervisor/supervisord.log
++ logfile=/var/log/supervisor/supervisord.log
+
+[include]
++ files = supervisord.d/*/*.ini supervisord.d/*.ini
+```
+
+创建 Systemd 配置文件
+
+```bash
+vim /etc/systemd/system/supervisord.service
+```
+
+写入如下内容：
+
+```bash
+# supervisord service for systemd (CentOS 7.0+)
+# by ET-CS (https://github.com/ET-CS)
+[Unit]
+Description=Supervisor daemon
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/supervisord
+ExecStop=/usr/bin/supervisorctl $OPTIONS shutdown
+ExecReload=/usr/bin/supervisorctl $OPTIONS reload
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+启动 Supervisord 并配置开机自启：
+
+```bash
+systemctl daemon-reload
+
+systemctl enable supervisord --now
+```
 
 ##### 安装 Nginx
 
