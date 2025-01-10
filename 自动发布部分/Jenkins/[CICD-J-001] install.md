@@ -570,6 +570,99 @@ ansible web -m ping
 
 返回值为 `pong` 代表成功。
 
+#### 配置 Nginx 反向代理
+
+Jenkins 服务成功启动后，可以通过局域网内跳板机使用 `IP:Port` 来进行访问，对于外部的访问，需要配置 Nginx 反向代理，配置内容如下：
+
+```bash
+vim /usr/local/nginx1.27/conf/conf.d/jenkins.conf
+```
+
+写入如下内容：
+
+```nginx
+upstream jenkins {
+  keepalive 32; # keepalive connections
+  server 127.0.0.1:8080; # jenkins ip and port
+}
+
+# Required for Jenkins websocket agents
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  '' close;
+}
+
+server {
+  listen          80;       # Listen on port 80 for IPv4 requests
+
+  server_name     jenkins.example.com;  # replace 'jenkins.example.com' with your server domain name
+
+  # this is the jenkins web root directory
+  # (mentioned in the output of "systemctl cat jenkins")
+  root            /var/run/jenkins/war/;
+
+  access_log      /var/log/nginx/jenkins.access.log;
+  error_log       /var/log/nginx/jenkins.error.log;
+
+  # pass through headers from Jenkins that Nginx considers invalid
+  ignore_invalid_headers off;
+
+  location ~ "^/static/[0-9a-fA-F]{8}\/(.*)$" {
+    # rewrite all static files into requests to the root
+    # E.g /static/12345678/css/something.css will become /css/something.css
+    rewrite "^/static/[0-9a-fA-F]{8}\/(.*)" /$1 last;
+  }
+
+  location /userContent {
+    # have nginx handle all the static requests to userContent folder
+    # note : This is the $JENKINS_HOME dir
+    root /var/lib/jenkins/;
+    if (!-f $request_filename){
+      # this file does not exist, might be a directory or a /**view** url
+      rewrite (.*) /$1 last;
+      break;
+    }
+    sendfile on;
+  }
+
+  location / {
+      sendfile off;
+      proxy_pass         http://jenkins;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+
+      # Required for Jenkins websocket agents
+      proxy_set_header   Connection        $connection_upgrade;
+      proxy_set_header   Upgrade           $http_upgrade;
+
+      proxy_set_header   Host              $http_host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+
+      #this is the maximum upload size
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_request_buffering    off; # Required for HTTP CLI commands
+  }
+
+}
+```
+
+如果使用 Blue Ocean 时遇到某些路径问题，将如下代码段添加至配置文件中：
+
+```nginx
+if ($request_uri ~* "/blue(/.*)") {
+    proxy_pass http://YOUR_SERVER_IP:YOUR_JENKINS_PORT/blue$1;
+    break;
+}
+```
+
 ### Web 应用服务器
 
 #### 配置 nginx 用户权限
