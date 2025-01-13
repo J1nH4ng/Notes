@@ -874,7 +874,7 @@ vim /etc/supervisord.d/${example-work}/${example-program}
 
 写入如下内容：
 
-> [!WARN]
+> [!WARNING]
 > 根据需要替换配置文件中的变量为业务的具体值。
 
 ```ini
