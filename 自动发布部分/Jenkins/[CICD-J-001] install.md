@@ -874,6 +874,9 @@ vim /etc/supervisord.d/${example-work}/${example-program}
 
 写入如下内容：
 
+> [!WARN]
+> 根据需要替换配置文件中的变量为业务的具体值。
+
 ```ini
 [program: ${example-program}]
 command=/usr/local/jdk8/bin/java -jar -Xms1g -Xmx1g -Dspring.profiles.active=${env} -Dserver.port=${port} /data/contents/${example-work}/${example-program}.jar
@@ -891,10 +894,9 @@ killasgroup=false
 stdout_logfile=/data/logs/${example-work}-${example-program}.log
 ```
 
-> [!TIP]
-> 根据需要替换配置文件中的变量为业务的具体值。
-
 ##### 安装 Nginx
+
+业务服务器上的 Nginx 仅仅提供最简单的反向代理服务，对于 SSL 证书解析、访问路由与访问频率的限制，都将其抽离至最外层代理以及 WAF 进行处理，所以仅安装最基础的功能即可。
 
 ##### 安装 PHP
 
