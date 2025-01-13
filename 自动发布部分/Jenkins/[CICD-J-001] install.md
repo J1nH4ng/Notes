@@ -6,12 +6,13 @@
 
 - [x] Jenkins
 - [x] Jdk 17+ （Jenkins 运行需要）
+- [x] Nginx （可选，可以直接使用 IP + 端口的方式访问）
 
 ### 业务需要
 
 - [x] Maven
     - [x] 修改 Maven 源
-- [x] Jdk 8 （与业务代码所需 Java 版本一致）
+- [x] JDK 8 （与业务代码所需 Java 版本一致）
 - [x] NVM （管理 NodeJS 版本）
     - [x] NodeJS 10.24.1
     - [x] NodeJS 12.22.12
@@ -27,7 +28,6 @@
 - [x] Ansible
     - [x] 配置账户密码
     - [x] 配置免密执行 sudo 命令
-- [x] Supervisord（管理业务进程）
 
 ## Jenkins 所需插件列表
 
@@ -40,6 +40,12 @@
 7. Pipeline: Stage View
 8. Build Pipeline
 9. Version Number
+
+##  应用服务器所需软件列表
+
+- [x] JDK 8（后端 Java 包运行需要）
+- [x] Nginx （前端包代理需要）
+- [x] Supervisord（后端 Java 进程管理）
 
 ## Jenkins 安装配置
 
