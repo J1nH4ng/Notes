@@ -854,6 +854,34 @@ systemctl daemon-reload
 systemctl enable supervisord --now
 ```
 
+根据不同的需求，使用目录分类，并根据具体业务编写如下的配置：
+
+```bash
+vim /etc/supervisord.d/${example-work}/${example-program}
+```
+
+写入如下内容：
+
+```ini
+[program: example-program]
+command=/usr/local/jdk8/bin/java -jar -Xms1g -Xmx1g -Dspring.profiles.active=${env} -Dserver.port=${port} /data/contents/${example-work}/${example-program}.jar
+directory=/data/contents/${example-work}/
+startsecs=10
+autorestart=true
+startretries=3
+user=root
+priority=999
+redirect_stderr=true
+stdout_logfile_maxbytes=1GB
+stdout_logfile_backups = 1
+stopasgroup=false
+killasgroup=false
+stdout_logfile=/data/logs/${example-work}-${example-program}.log
+```
+
+> [!TIP]
+> 根据需要替换配置文件中的变量为业务的具体值。
+
 ##### 安装 Nginx
 
 ##### 安装 PHP
