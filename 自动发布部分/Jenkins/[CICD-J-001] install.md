@@ -863,7 +863,7 @@ vim /etc/supervisord.d/${example-work}/${example-program}
 写入如下内容：
 
 ```ini
-[program: example-program]
+[program: ${example-program}]
 command=/usr/local/jdk8/bin/java -jar -Xms1g -Xmx1g -Dspring.profiles.active=${env} -Dserver.port=${port} /data/contents/${example-work}/${example-program}.jar
 directory=/data/contents/${example-work}/
 startsecs=10
