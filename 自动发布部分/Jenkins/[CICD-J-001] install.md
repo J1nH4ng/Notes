@@ -27,6 +27,7 @@
 - [x] Ansible
     - [x] 配置账户密码
     - [x] 配置免密执行 sudo 命令
+- [x] Supervisord（管理业务进程）
 
 ## Jenkins 所需插件列表
 
