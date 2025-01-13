@@ -583,6 +583,9 @@ ansible web -m ping
 
 Jenkins 服务成功启动后，可以通过局域网内跳板机使用 `IP:Port` 来进行访问，对于外部的访问，需要配置 Nginx 反向代理，配置内容如下：
 
+> [!TIP]
+> 此 Nginx 配置文件配置于最外层的代理服务器上。
+
 ```bash
 vim /usr/local/nginx1.27/conf/conf.d/jenkins.conf
 ```
