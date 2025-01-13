@@ -46,6 +46,8 @@
 - [x] JDK 8（后端 Java 包运行需要）
 - [x] Nginx （前端包代理需要）
 - [x] Supervisord（后端 Java 进程管理）
+- [ ] PHP
+    - [ ] compose 
 
 ## Jenkins 安装配置
 
