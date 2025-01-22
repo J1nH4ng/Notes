@@ -70,6 +70,77 @@ yum -y install socat ncurses-compat-libs
 
 RabbitMQ 是使用 Erlang 语言进行编写的，运行需要 Erlang 环境。需要注意的是 Erlang 语言版本与 RabbitMQ 版本的对应，相关的列表可以在官网[^1]进行查找。
 
+这里使用的版本如下：
+
+- RabbitMQ：V3.11.28
+- Erlang：V25..3.2
+
+对于 Erlang 使用 rpm 包进行安装：
+
+```bash
+cd /usr/local/src
+wget https://github.com/rabbitmq/erlang-rpm/releases/download/v25.3.2/erlang-25.3.2-1.el8.x86_64.rpm
+rpm -ivh erlang-25.3.2-1.el8.x86_64.rpm
+```
+
+#### 安装 RabbitMQ
+
+下载二进制包进行解压安装：
+
+```bash
+cd /usr/local/src
+
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.11.28/rabbitmq-server-generic-unix-3.11.28.tar.xz
+
+tar xvf rabbitmq-server-generic-unix-3.11.28.tar.xz
+
+mv /usr/local/src/rabbitmq-server-generic-unix-3.11.28 /usr/local/rabbitmq_server3.11
+```
+
+安装完成后写入环境变量：
+
+```bash
+# 添加搜索路径到配置文件
+echo 'PATH=$PATH:/usr/local/rabbitmq_server3.11/sbin
+export PATH' >> /etc/profile
+
+# 刷新环境变量
+source /etc/profiles
+```
+
+使用 Systemd 进行进程管理：
+
+```bash
+vim /etc/systemd/system/rabbitmq-server.service
+```
+
+写入如下内容：
+
+```ini
+[Unit]
+Description=RabbitMQ broker
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/usr/local/rabbitmq_server3.11
+ExecStart=/usr/local/rabbitmq_server3.11/sbin/rabbitmq-server
+ExecStop=/usr/local/rabbitmq_server3.11/sbin/rabbitmqctl stop
+
+[Install]
+WantedBy=multi-user.target
+```
+
+配置开机自启动：
+
+```bash
+systemctl daemon-reload
+
+systemctl enable --now rabbitmq-server
+```
+
 ### 配置镜像集群
 
 
