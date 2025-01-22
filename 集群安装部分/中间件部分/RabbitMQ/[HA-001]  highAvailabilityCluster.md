@@ -37,7 +37,7 @@ RabbitMQ 的集群部署有两种模式：
 修改每台机器的 hostname 与服务器列表一致且将 hosts 文件配置好
 
 ```bash
-hostnamectl set-hostname RabbitMQ-${i} 
+hostnamectl set-hostname RabbitMQ-${i}
 ```
 
 修改其中的 `${i}` 变量
@@ -55,6 +55,13 @@ vim /etc/hosts
 192.168.50.12  RabbitMQ-2
 192.168.50.13  RabbitMQ-3
 ```
+
+#### 安装必要的依赖
+
+```bash
+yum -y install socat ncurses-compat-libs
+```
+
 
 ### 配置镜像集群
 
