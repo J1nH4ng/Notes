@@ -79,7 +79,9 @@ RabbitMQ 是使用 Erlang 语言进行编写的，运行需要 Erlang 环境。�
 
 ```bash
 cd /usr/local/src
+
 wget https://github.com/rabbitmq/erlang-rpm/releases/download/v25.3.2/erlang-25.3.2-1.el8.x86_64.rpm
+
 rpm -ivh erlang-25.3.2-1.el8.x86_64.rpm
 ```
 
