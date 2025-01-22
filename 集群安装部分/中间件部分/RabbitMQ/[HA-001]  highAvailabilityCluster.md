@@ -32,6 +32,10 @@ RabbitMQ 的集群部署有两种模式：
 
 安装 RabbitMQ 集群之前，确保每台服务器都安装了 RabbitMQ 并可以成功启动。
 
+> [!NOTE]
+>
+> 如无特殊说明，接下来的所有操作需要在每一台机器上进行操作。
+
 #### 配置 `hosts` 与 `hostname`
 
 修改每台机器的 hostname 与服务器列表一致且将 hosts 文件配置好
