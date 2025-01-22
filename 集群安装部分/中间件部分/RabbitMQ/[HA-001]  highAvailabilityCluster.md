@@ -66,6 +66,9 @@ vim /etc/hosts
 yum -y install socat ncurses-compat-libs
 ```
 
+#### 安装 Erlang 环境
+
+RabbitMQ 是使用 Erlang 语言进行编写的，运行需要 Erlang 环境。需要注意的是 Erlang 语言版本与 RabbitMQ 版本的支持性，相关的支持列表可以在官网进行查找：[RabbitMQ 支持的 Erlang 版本]()
 
 ### 配置镜像集群
 
