@@ -28,4 +28,36 @@ RabbitMQ 的集群部署有两种模式：
 | 192.168.50.12 | RabbitMQ-2 |   Slave   |
 | 192.168.60.13 | RabbitMQ-3 |   Slave   |
 
+### 单点安装 RabbitMQ
+
+安装 RabbitMQ 集群之前，确保每台服务器都安装了 RabbitMQ 并可以成功启动。
+
+#### 配置 `hosts` 与 `hostname`
+
+修改每台机器的 hostname 与服务器列表一致且将 hosts 文件配置好
+
+```bash
+hostnamectl set-hostname RabbitMQ-${i} 
+```
+
+修改其中的 `${i}` 变量
+
+将如下的内容写入每一台服务器的 `hosts` 文件中：
+
+```bash
+vim /etc/hosts
+```
+
+写入如下内容：
+
+```text
+192.168.50.11  RabbitMQ-1
+192.168.50.12  RabbitMQ-2
+192.168.50.13  RabbitMQ-3
+```
+
+### 配置镜像集群
+
+
+
 ## 验证安装
